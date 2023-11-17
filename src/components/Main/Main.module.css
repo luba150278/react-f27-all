@@ -1,7 +1,4 @@
-.success {
-  color: green;
-}
-
-.warning {
-  color: red;
+.grid{
+  display: grid;
+  gap: 15px;
 }
