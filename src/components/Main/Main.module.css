@@ -1,4 +1,18 @@
-.grid{
+.grid {
   display: grid;
   gap: 15px;
+}
+.item{
+  display: grid;
+  grid-template-columns: 30px repeat(2, 2fr) 40px repeat(4, 1fr);
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.item:first-child{
+  border-bottom: 2px solid #000; ;
+}
+.item:first-child > p{
+  font-weight: bold;
 }

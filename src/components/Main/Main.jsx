@@ -5,7 +5,7 @@ import styles from './Main.module.css';
 // action - об'єкт з одним обов'язковим полем 'type', друге поле 'payload' - необов'язкове - данні для роботи зі state
 const reducer = (state, action) => {
   const { type, payload } = action;
-  const id = payload;
+  const id = payload.id ? payload.id : payload;
   const ind = state.findIndex((item) => item.id === id);
   switch (type) {
     case 'add':
@@ -24,23 +24,59 @@ const reducer = (state, action) => {
         const arr = [...state.slice(0, ind), ...state.slice(ind + 1)];
         return arr;
       }
+    case 'new_book':
+      state.push(payload);
+      return [...state];
+    case 'change_book':
+      if (ind !== -1) {
+        state[ind] = payload;
+      }
+      return [...state];
     default:
       return state;
   }
 };
+
+const initialForm = { title: '', author: '', count: 1 };
 export default function Main() {
   const [state, dispatch] = useReducer(reducer, books);
-  const [form, setForm] = useState({ title: '', author: '', count: 1 });
+  const [form, setForm] = useState(initialForm);
+  const [changedId, setChangedId] = useState(0);
 
-  const changeInput = (e) => {};
+  const changeInput = (e) => {
+    setForm((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
 
   const sumbit = (e) => {
     e.preventDefault();
+    const id = Date.now();
+
+    if (changedId === 0) {
+      const payload = { ...form, id };
+      dispatch({ type: 'new_book', payload });
+    } else {
+      const payload = { ...form, id: changedId };
+      dispatch({ type: 'change_book', payload });
+      setForm(initialForm);
+      setChangedId(0);
+    }
+  };
+
+  const changeBook = (id) => {
+    setChangedId(id);
+    const book = state.find((item) => item.id === id);
+    if (book) {
+      setForm({ ...book });
+    } else {
+      setChangedId(0);
+    }
   };
   return (
     <section>
       <div className='container my-5'>
-        <Form>
+        <Form className='d-flex gap-5 mb-5' onSubmit={(e) => sumbit(e)}>
           <Form.Group className='mb-3' controlId='title'>
             <Form.Label>Title</Form.Label>
             <Form.Control
@@ -77,8 +113,18 @@ export default function Main() {
           </Button>
         </Form>
         <div className={styles.grid}>
+          <div key='head-book' className={styles.item}>
+            <p>#</p>
+            <p>Title</p>
+            <p>Author</p>
+            <p>Count</p>
+            <p>Delete</p>
+            <p>Add</p>
+            <p>Minus</p>
+            <p>Change</p>
+          </div>
           {state.map((book, i) => (
-            <div key={book.id} className='d-flex gap-2 align-items-center'>
+            <div key={book.id} className={styles.item}>
               <p>{i + 1}</p>
               <p>{book.title}</p>
               <p>{book.author}</p>
@@ -99,6 +145,10 @@ export default function Main() {
                 onClick={() => dispatch({ type: 'minus', payload: book.id })}
               >
                 Minus
+              </Button>
+
+              <Button variant='warning' onClick={() => changeBook(book.id)}>
+                Change
               </Button>
             </div>
           ))}
