@@ -3,46 +3,16 @@ import { Button, Form } from 'react-bootstrap';
 import { books } from '../../share/data';
 import Arrows from '../Arrows/Arrows';
 import styles from './Main.module.css';
-// action - об'єкт з одним обов'язковим полем 'type', друге поле 'payload' - необов'язкове - данні для роботи зі state
-const reducer = (state, action) => {
-  const { type, payload } = action;
-  const id = payload.id ? payload.id : payload;
-  const ind = state.findIndex((item) => item.id === id);
-  switch (type) {
-    case 'add':
-      if (ind !== -1) {
-        state[ind].count += 1;
-      }
-      return [...state];
-
-    case 'minus':
-      if (ind !== -1) {
-        state[ind].count -= 1;
-      }
-      return [...state];
-    case 'delete':
-      if (ind !== -1) {
-        const arr = [...state.slice(0, ind), ...state.slice(ind + 1)];
-        return arr;
-      }
-    case 'new_book':
-      state.push(payload);
-      return [...state];
-    case 'change_book':
-      if (ind !== -1) {
-        state[ind] = payload;
-      }
-      return [...state];
-    default:
-      return state;
-  }
-};
+import { reducer } from '../../share/reducer';
 
 const initialForm = { title: '', author: '', count: 1 };
 export default function Main() {
   const [state, dispatch] = useReducer(reducer, books);
   const [form, setForm] = useState(initialForm);
   const [changedId, setChangedId] = useState(0);
+
+  const [sortColumn, setSortColumn] = useState('');
+  const [isAZ, setIsAZ] = useState(true);
 
   const changeInput = (e) => {
     setForm((prev) => {
@@ -74,6 +44,16 @@ export default function Main() {
       setChangedId(0);
     }
   };
+
+  const changeSort = (isAZ, name) => {
+    setSortColumn(() => name);
+    setIsAZ(() => isAZ);
+    dispatch({
+      type: 'sort',
+      payload: { isAZ, name, isNumber: name === 'count' ? true : false },
+    });
+  };
+
   return (
     <section>
       <div className='container my-5'>
@@ -116,9 +96,33 @@ export default function Main() {
         <div className={styles.grid}>
           <div key='head-book' className={styles.item}>
             <p>#</p>
-            <p>Title <Arrows name='title' changeSort={changeSort} isAZ={true}/></p>
-            <p>Author</p>
-            <p>Count</p>
+            <p>
+              Title
+              <Arrows
+                name='title'
+                changeSort={changeSort}
+                isAZ={isAZ}
+                sortColumn={sortColumn}
+              />
+            </p>
+            <p>
+              Author
+              <Arrows
+                name='author'
+                changeSort={changeSort}
+                isAZ={isAZ}
+                sortColumn={sortColumn}
+              />
+            </p>
+            <p>
+              Count
+              <Arrows
+                name='count'
+                changeSort={changeSort}
+                isAZ={isAZ}
+                sortColumn={sortColumn}
+              />
+            </p>
             <p>Delete</p>
             <p>Add</p>
             <p>Minus</p>
