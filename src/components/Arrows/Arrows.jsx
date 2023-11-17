@@ -4,11 +4,9 @@ import {
 } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import styles from './Arrows.module.css';
-import { LocalContext } from '../../share/context';
-import { useContext } from 'react';
 
-export default function Arrows({  name  }) {
-  const { changeSort, sortColumn, isAZ } = useContext(LocalContext);
+
+export default function Arrows({  name, changeSort,  sortColumn, isAZ  }) {
   const isActive = sortColumn === name;
   return (
     <span className={styles['sort-wrap']}>

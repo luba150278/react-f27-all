@@ -1,6 +1,7 @@
 import { useReducer, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { books } from '../../share/data';
+import Arrows from '../Arrows/Arrows';
 import styles from './Main.module.css';
 // action - об'єкт з одним обов'язковим полем 'type', друге поле 'payload' - необов'язкове - данні для роботи зі state
 const reducer = (state, action) => {
@@ -115,7 +116,7 @@ export default function Main() {
         <div className={styles.grid}>
           <div key='head-book' className={styles.item}>
             <p>#</p>
-            <p>Title</p>
+            <p>Title <Arrows name='title' changeSort={changeSort} isAZ={true}/></p>
             <p>Author</p>
             <p>Count</p>
             <p>Delete</p>
