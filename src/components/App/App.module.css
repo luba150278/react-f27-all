@@ -1,0 +1,10 @@
+.wrap{
+    display: grid;
+    width: 200px;
+    height: 400px;
+    grid-template-columns: repeat(3,1fr);
+    margin: 50px;
+}
+.input{
+    text-align: center;
+}
