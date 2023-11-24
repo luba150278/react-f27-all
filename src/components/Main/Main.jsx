@@ -1,64 +1,35 @@
 import { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import styles from './Main.module.css';
-import validator from 'validator';
+import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrement, increment, changeValue } from '../../share/reducers/counter.reducer';
+//import styles
 
-const initialForm = { email: '', phone: '' };
 export default function Main() {
-  const [form, setForm] = useState(initialForm);
-  const sumbit = (e) => {
-    e.preventDefault();
-    const phone = form.phone
-      .trim()
-      .replaceAll(' ', '')
-      .replaceAll('(', '')
-      .replaceAll(')', '')
-      .replaceAll('-', '');
-
-    console.log(phone);
-    const isValidPhone = validator.isMobilePhone(phone, 'uk-UA');
-
-    console.log(isValidPhone);
-    const email = form.email;
-    const isValidEmail = validator.isEmail(email);
-
-    if (isValidPhone && isValidEmail) {
-      console.log('VALIDATION SUCCESSFUL')
-    }
-  };
-  const changeInput = (e) => {
-    setForm((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-  };
+  const [act, setAct] = useState('+');
+  const [val, setVal] = useState(0);
+  const counter = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
   return (
     <section>
       <div className='container my-5'>
-        <Form className='d-flex gap-5 mb-5' onSubmit={(e) => sumbit(e)}>
-          <Form.Group className='mb-3' controlId='email'>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              placeholder='Email'
-              name='email'
-              value={form.email}
-              onChange={(e) => changeInput(e)}
+        <div>
+          <div className='d-flex gap-4'>
+            <input
+              type='number'
+              onChange={(e) => setVal(e.target.value)}
+              value={val}
             />
-          </Form.Group>
-
-          <Form.Group className='mb-3' controlId='phone'>
-            <Form.Label>Phone</Form.Label>
-            <Form.Control
-              placeholder='Phone'
-              value={form.phone}
-              name='phone'
-              onChange={(e) => changeInput(e)}
-            />
-          </Form.Group>
-
-          <Button variant='primary' type='submit'>
-            Submit
-          </Button>
-        </Form>
+            <input onChange={(e) => setAct(e.target.value)} value={act} />
+          </div>
+          <p><span className="fw-bold">Current</span>: {counter}</p>
+          <div className='d-flex gap-4'>
+            <Button onClick={() => dispatch(increment())}>+</Button>
+            <Button onClick={() => dispatch(decrement())}>-</Button>
+            <Button onClick={() => dispatch(changeValue({ act, val }))}>
+              change
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );
