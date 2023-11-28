@@ -3,14 +3,18 @@ import './styles.css';
 import Main from './components/Main/Main';
 import { Provider } from 'react-redux';
 import { store } from './share/store';
-import BlackJack from './components/Main/BlackJack';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
+const router = createBrowserRouter([{
+  path: '/',
+  element: <Main />
+}])
+
 root.render(
   <Provider store={store}>
-    {/* <Main /> */}
-    <BlackJack />
+    <RouterProvider router={router} />
   </Provider>
 );
