@@ -1,8 +1,22 @@
+import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
 
-
-export default function Main() {
- 
+function Main({ children }) {
   return (
-   <p>Hello</p>
+    <>
+      <Header />
+      <>{children}</>
+      <Footer />
+    </>
   );
 }
+
+export const withLayout = (Component) => {
+  function wLC(props) {
+    return (
+      <Main>
+        <Component {...props} />
+      </Main>
+    );
+  }
+};
