@@ -1,12 +1,11 @@
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
+import { withLayout } from '../../components/Main/Main';
 
-export default function Home() {
+function Home() {
   return (
-    <>
-      <Header />
-      Home
-      <Footer />
-    </>
+    <section>
+      <div className='container'> Home</div>
+    </section>
   );
 }
+
+export default withLayout(Home);

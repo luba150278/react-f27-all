@@ -11,7 +11,7 @@ function Main({ children }) {
   );
 }
 
-export const withLayout = (Component) => {
+export const withLayout = (Component) => 
   function wLC(props) {
     return (
       <Main>
@@ -19,4 +19,4 @@ export const withLayout = (Component) => {
       </Main>
     );
   }
-};
+

@@ -1,22 +1,19 @@
-import Footer from '../../components/Footer/Footer';
 import FormAuth from '../../components/FormAuth/FormAuth';
-import Header from '../../components/Header/Header';
+import { withLayout } from '../../components/Main/Main';
 
-export default function SignUp() {
+function SignUp() {
   return (
-    <>
-      <Header />
-      <section>
-        <div className='container'>
-          <FormAuth
-            title='Sign up'
-            link='/signin'
-            titleLink='Have an account?'
-            isSignUp={true}
-          />
-        </div>
-      </section>
-      <Footer />
-    </>
+    <section>
+      <div className='container'>
+        <FormAuth
+          title='Sign up'
+          link='/signin'
+          titleLink='Have an account?'
+          isSignUp={true}
+        />
+      </div>
+    </section>
   );
 }
+
+export default withLayout(SignUp);
