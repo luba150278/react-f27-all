@@ -6,6 +6,7 @@ import { store } from './share/store';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
+import CreatePost from './pages/CreatePost/CreatePost';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignUp />,
+  },
+  {
+    path: '/create-post',
+    element: <CreatePost />,
   },
 ]);
 
