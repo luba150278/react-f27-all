@@ -11,6 +11,7 @@ export default function FormAuth({ title, link, titleLink, isSignUp }) {
     ? { email: '', password: '', username: '' }
     : { email: '', password: '' };
   const [formData, setFormData] = useState(initalState);
+  const error = useSelector((state) => state.error.error);
   const dispatch = useDispatch();
   const handlerSubmit = (e) => {
     console.log('aaa');
