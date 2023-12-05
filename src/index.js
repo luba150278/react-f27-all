@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: '/create-post',
+    path: '/create-post/:isEdit',
     element: <CreatePost />,
   },
 ]);

@@ -25,7 +25,7 @@ export default function Header() {
             {token && token !== '' && (
               <>
                 <p>{username}</p>
-                <Link to='/create-post'>
+                <Link to='/create-post/false'>
                   <IoCreateOutline />
                 </Link>
                 <p className={styles.logout} onClick={() => dispatch(logout())}>
