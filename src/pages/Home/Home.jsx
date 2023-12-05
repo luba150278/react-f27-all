@@ -1,72 +1,33 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Image from '../../components/Image/Image';
 import { withLayout } from '../../components/Main/Main';
-import { fetchDeletePost, fetchPosts } from '../../share/api/posts.api';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import { VscTrash } from 'react-icons/vsc';
-import { IoCreateOutline } from 'react-icons/io5';
-import { fetchGetPostData } from '../../share/api/post.api';
-import { useNavigate } from 'react-router-dom';
+import { getImagesArr } from '../../share/reducers/images.reducer';
+import { setActiveCards } from '../../share/reducers/activeImages.reducer';
 
 function Home() {
-  //const [post, setPost] = useState(null);
-  const post = useSelector((state) => state.post);
-  const posts = useSelector((state) => state.posts.posts);
-  const id = useSelector((state) => state.auth.id);
+  //const [activeCards, setActiveCards] = useState(-1);
+  const activeCards = useSelector(state => state.activeImages);
+  const images = useSelector((state) => state.images);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, []);
-
-  const handlerGetPostData = async (slug) => {
-    await dispatch(fetchGetPostData(slug));
-    if (post) {
-      navigate('/create-post/true');
-    }
+  const changeActiveCard = (image) => {
+    dispatch(setActiveCards(image));
   };
+  useEffect(() => {
+    dispatch(getImagesArr());
+  }, []);
 
   return (
     <section>
-      <div className='container'>
-        {posts.length === 0 && <h1>Постів ще немає</h1>}
-        {posts.length > 0 && (
-          <>
-            <h1>Пости</h1>
-            <div className='grid'>
-              {posts.map((item) => {
-                return (
-                  <Card key={item.id}>
-                    {item.author.id === Number(id) && (
-                      <div className='d-flex'>
-                        <div
-                          onClick={async () => {
-                            await dispatch(
-                              fetchDeletePost({ slug: item.slug })
-                            );
-                            await dispatch(fetchPosts());
-                          }}
-                        >
-                          <VscTrash />
-                        </div>
-                        <div onClick={() => handlerGetPostData(item.slug)}>
-                          <IoCreateOutline />
-                        </div>
-                      </div>
-                    )}
-                    <Card.Body>
-                      <Card.Title>{item.title}</Card.Title>
-                      <Card.Text>{item.description}</Card.Text>
-                      <Button variant='primary'>Див. пост</Button>
-                    </Card.Body>
-                  </Card>
-                );
-              })}
-            </div>
-          </>
-        )}
+      <div className='container home-container'>
+        {images.map((image, index) => (
+          <Image
+            key={`${image}-${index}`}
+            isOpen={activeCards.includes(image) ? true : false}
+            src={image}
+            changeActiveCard={changeActiveCard}
+          />
+        ))}
       </div>
     </section>
   );

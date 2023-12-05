@@ -1,14 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './reducers/auth.reducer'
-import errorsReducer from './reducers/errors.reducer'
-import postReducer from './reducers/post.reducer'
-import postsReducer from './reducers/posts.reducer'
+import activeImagesReducer from './reducers/activeImages.reducer'
+import imagesReducer from './reducers/images.reducer'
+
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
-    error: errorsReducer,
-    posts: postsReducer,
-    post: postReducer
+    images: imagesReducer,
+    activeImages: activeImagesReducer
   },
 })
